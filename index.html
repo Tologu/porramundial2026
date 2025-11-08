@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Porra Mundial 2026</title>
+    
+    <!-- Carga de React y ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Carga de Babel para compilar JSX en el navegador -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Carga de Tailwind CSS para estilos -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuración para usar la fuente Inter -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
+<body>
+    <!-- Este es el contenedor donde se renderizará tu aplicación React -->
+    <div id="root"></div>
+
+    <!-- Carga tu archivo React. MUY IMPORTANTE: usa type="text/babel" -->
+    <script type="text/babel" src="porra-mundial.jsx"></script>
+    
+    <script type="text/babel">
+        // --------------------------------------------------------
+        // ESTE SCRIPT INICIALIZA LA APLICACIÓN
+        // --------------------------------------------------------
+
+        // Asegúrate de que el componente principal se llama 'App' y es el export default
+        const RootComponent = window.App || window.default; 
+        
+        if (RootComponent) {
+            const container = document.getElementById('root');
+            const root = ReactDOM.createRoot(container);
+            
+            // Asignación de variables globales (necesarias para la app)
+            // En este entorno, estas variables se definen globalmente para que el JSX las acceda.
+            if (typeof __firebase_config === 'undefined') {
+                window.__firebase_config = '{}'; 
+            }
+            if (typeof __initial_auth_token === 'undefined') {
+                window.__initial_auth_token = null; 
+            }
+            if (typeof __app_id === 'undefined') {
+                window.__app_id = 'github-porra-app'; 
+            }
+
+            root.render(<RootComponent />);
+        } else {
+            console.error("Error: El componente 'App' no se encontró. Asegúrate de que tu archivo .jsx lo exporta correctamente.");
+            document.getElementById('root').innerHTML = '<div class="p-10 text-center text-red-600">Error al cargar la aplicación. Revisa la consola para más detalles.</div>';
+        }
+    </script>
+</body>
+</html>
