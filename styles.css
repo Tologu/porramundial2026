@@ -295,3 +295,12 @@ footer {
     border-radius: 5px;
     border: 1px solid #ccc;
 }
+.clasificacion-page {
+  overflow-x: auto;
+}
+
+#tabla-clasificacion {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9em; /* más compacto en móvil */
+}
