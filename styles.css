@@ -1,0 +1,297 @@
+
+
+#tabla-clasificacion tbody tr:last-child {
+    background-color: red;
+}/* ESTILOS GENERALES Y RESET */
+:root {
+    --color-principal: #1a4d95; /* Azul oscuro - Color de la Porra */
+    --color-secundario: #fdb927; /* Amarillo - Acento */
+    --color-fondo: #f4f7f6;
+    --color-texto: #333;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+body {
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    line-height: 1.6;
+}
+
+/* HEADER Y NAVEGACIÓN */
+header {
+    background-color: var(--color-principal);
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin-bottom: 10px;
+    font-size: 2.2em;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    margin: 0 5px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+nav a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+nav a.active {
+    background-color: var(--color-secundario);
+    color: var(--color-principal);
+    font-weight: bold;
+}
+
+/* CONTENIDO PRINCIPAL */
+main {
+    padding: 30px 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h2 {
+    color: var(--color-principal);
+    border-bottom: 2px solid var(--color-secundario);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+}
+
+/* CLASIFICACIÓN (index.html) */
+#tabla-clasificacion {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+}
+
+#tabla-clasificacion th, #tabla-clasificacion td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+#tabla-clasificacion thead {
+    background-color: var(--color-principal);
+    color: white;
+}
+
+#tabla-clasificacion tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#tabla-clasificacion tbody tr:hover {
+    background-color: #e6f7ff;
+    cursor: pointer;
+}
+
+#tabla-clasificacion tbody tr:first-child {
+    font-weight: bold;
+    color: black;
+    background: linear-gradient(90deg, #ffe082, #fdb927, #ffe082);
+    background-size: 200% 200%;
+    animation: brillo 3s linear infinite, pulso 2s ease-in-out infinite;
+    box-shadow: 4px 2px 20px 3px rgba(253, 185, 39, 0.7);
+}
+@keyframes pulso {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+}
+@keyframes brillo {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+.giro {
+  display: inline-block; /* necesario para aplicar transformaciones */
+  animation: rotar 4s linear infinite;
+}
+
+@keyframes rotar {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+/* Último puesto en la clasificación */
+#tabla-clasificacion tbody tr:last-child {
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(90deg, #f39b9b, #e53935, #b71c1c);
+    background-size: 200% 200%;
+    animation: alerta 3s linear infinite, vibrar 2s ease-in-out infinite;
+}
+
+/* Animación de brillo en rojo */
+@keyframes alerta {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Animación de vibración ligera */
+@keyframes vibrar {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-2px);
+    }
+    75% {
+        transform: translateX(2px);
+    }
+}
+@keyframes desvanecer {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+#tabla-clasificacion tbody tr:last-child {
+  animation: alerta 3s linear infinite, vibrar 2s ease-in-out infinite, desvanecer 4s ease-in-out infinite;
+}
+#tabla-clasificacion tbody tr:hover {
+  background-color: rgba(255, 255, 0, 0.2);
+  cursor: pointer;
+}
+
+/* PARTIDOS (partidos.html) */
+.partido-card {
+    background-color: white;
+    border-left: 5px solid var(--color-principal);
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Para hacerlo responsivo */
+}
+
+.info-partido {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.9em;
+    color: #666;
+    margin-right: 20px;
+}
+
+.info-partido .fecha {
+    font-weight: bold;
+    color: var(--color-principal);
+    margin-bottom: 5px;
+}
+
+.equipos {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.acciones {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+
+.vs {
+    margin: 0 15px;
+    color: var(--color-secundario);
+    font-size: 0.8em;
+    font-weight: normal;
+}
+
+.perfil-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.pronostico-tab {
+  background-color: var(--color-principal);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+
+.pronostico-area {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.btn-pronostico {
+    background-color: var(--color-secundario);
+    color: var(--color-principal);
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.btn-pronostico:hover {
+    background-color: #ffc84a;
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 15px 0;
+    margin-top: 30px;
+    border-top: 1px solid #ddd;
+    color: #777;
+    font-size: 0.9em;
+}
+.grupo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.grupo-selector {
+    padding: 5px;
+    font-size: 0.9em;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Pronósticos de Fuen</title>
+    <link rel="stylesheet" href="styles.css">
+    
+
+</head>
+<body>
+    <header>
+        <h1>⚽ Pronósticos de Fuen</h1>
+        <nav>
+            <a href="index.html">Clasificación</a>
+            <a href="partidos.html">Partidos</a>
+        </nav>
+    </header>
+
+    <main class="partidos-page">
+        <h2>Partidos</h2>
+        <div class="perfil-header">
+            
+            <a href="clasificacion-fuen.html" class="pronostico-tab">Clasificación según tu pronóstico</a>
+        </div>
+        <main id="contenedor-grupos"></main>
+
+  <script>
+    // Definimos los grupos y partidos
+    const grupos = [
+      { nombre: "A", partidos: [
+        { local: "Alemania", visitante: "Escocia" },
+        { local: "Hungría", visitante: "Suiza" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" }
+      ]},
+      { nombre: "B", partidos: [
+        { local: "España", visitante: "Croacia" },
+        { local: "Italia", visitante: "Albania" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" }
+      ]},
+      { nombre: "C", partidos: [
+        { local: "España", visitante: "Croacia" },
+        { local: "Italia", visitante: "Albania" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" }
+      ]},
+      { nombre: "D", partidos: [
+        { local: "España", visitante: "Croacia" },
+        { local: "Italia", visitante: "Albania" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" }
+      ]},
+      { nombre: "E", partidos: [
+        { local: "España", visitante: "Croacia" },
+        { local: "Italia", visitante: "Albania" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" }
+      ]},
+      { nombre: "F", partidos: [
+        { local: "España", visitante: "Croacia" },
+        { local: "Italia", visitante: "Albania" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" }
+      ]},
+      { nombre: "G", partidos: [
+        { local: "España", visitante: "Croacia" },
+        { local: "Italia", visitante: "Albania" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" }
+      ]},
+      { nombre: "H", partidos: [
+        { local: "España", visitante: "Croacia" },
+        { local: "Italia", visitante: "Albania" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" }
+      ]},
+      { nombre: "I", partidos: [
+        { local: "España", visitante: "Croacia" },
+        { local: "Italia", visitante: "Albania" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" }
+      ]},
+      { nombre: "J", partidos: [
+        { local: "España", visitante: "Croacia" },
+        { local: "Italia", visitante: "Albania" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" }
+      ]},
+      { nombre: "K", partidos: [
+        { local: "España", visitante: "Croacia" },
+        { local: "Italia", visitante: "Albania" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" }
+      ]},
+      { nombre: "L", partidos: [
+        { local: "España", visitante: "Croacia" },
+        { local: "Italia", visitante: "Albania" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" },
+        { local: "Equipo 1", visitante: "Equipo 2" }
+      ]},
+
+      // ... añade aquí los grupos C hasta L con sus partidos
+    ];
+      // ... añade aquí los grupos C hasta L con sus partidos
+    
+
+    const contenedor = document.getElementById("contenedor-grupos");
+
+    grupos.forEach(grupo => {
+      let html = `
+        <section class="grupo" id="grupo-${grupo.nombre.toLowerCase()}">
+          <h3>Grupo ${grupo.nombre}</h3>
+      `;
+
+      grupo.partidos.forEach(p => {
+        html += `
+          <div class="partido-card">
+            <div class="equipos">
+              <span class="equipo-local">${p.local}</span>
+              <input type="number" class="marcador" min="0" placeholder="0">
+              <span class="vs">vs</span>
+              <input type="number" class="marcador" min="0" placeholder="0">
+              <span class="equipo-visitante">${p.visitante}</span>
+            </div>
+            <div class="acciones">
+              <button class="btn-confirmar">Confirmar</button>
+              <button class="btn-cambiar" disabled>Cambiar</button>
+            </div>
+          </div>
+        `;
+      });
+
+      html += `</section>`;
+      contenedor.innerHTML += html;
+    });
+  </script>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Porra Mundial 2026</p>
+    </footer>
+</body>
+</html>
+<script src="script.js"></script>
