@@ -203,21 +203,21 @@ h2 {
 .partido-card {
     background-color: white;
     border-left: 5px solid var(--color-principal);
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: space-between;
+    padding: 18px;
+    margin-bottom: 16px;
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+    display: grid;
+    grid-template-columns: auto 1.3fr auto;
+    gap: 8px 12px;
     align-items: center;
-    flex-wrap: wrap; /* Para hacerlo responsivo */
+    position: relative;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     .partido-card {
-        flex-direction: column;
+        grid-template-columns: 1fr;
         align-items: flex-start;
-        gap: 10px;
     }
 
     .acciones {
@@ -231,7 +231,7 @@ h2 {
     flex-direction: column;
     font-size: 0.9em;
     color: #666;
-    margin-right: 20px;
+    margin-right: 16px;
 }
 
 .info-partido .fecha {
@@ -243,9 +243,14 @@ h2 {
 .equipos {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 10px;
+  gap: 6px;
+  flex-wrap: wrap;
   font-weight: bold;
+}
+
+.equipos .marcador {
+    width: 64px;
+    text-align: center;
 }
 
 .acciones {
@@ -254,12 +259,90 @@ h2 {
   justify-content: flex-end;
 }
 
+.btn-confirmar,
+.btn-cambiar,
+.btn-acertantes-exactos {
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+    font-size: 0.9em;
+}
+
+.btn-confirmar {
+    background: linear-gradient(90deg, #43a047, #66bb6a);
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(67, 160, 71, 0.35);
+}
+
+.btn-confirmar:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(67, 160, 71, 0.45);
+}
+
+.btn-cambiar {
+    background: linear-gradient(90deg, #ef5350, #e53935);
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(229, 57, 53, 0.35);
+}
+
+.btn-cambiar:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(229, 57, 53, 0.45);
+}
+
+.btn-acertantes-exactos {
+    background: linear-gradient(90deg, #2196f3, #42a5f5);
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(33, 150, 243, 0.35);
+}
+
+.btn-acertantes-exactos:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(33, 150, 243, 0.45);
+}
+
+.btn-confirmar:disabled,
+.btn-cambiar:disabled,
+.btn-acertantes-exactos:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
 
 .vs {
     margin: 0 15px;
     color: var(--color-secundario);
     font-size: 0.8em;
     font-weight: normal;
+}
+
+.badge-puntos {
+    position: absolute;
+    left: -20px;
+    top: 10px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 0.85em;
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.badge-exacto {
+    background: linear-gradient(90deg, #ffe082, #ffe082);
+    color: #754b00;
+    border: 1px solid #fdb927;
+}
+
+.badge-signo {
+    background: #8bc34a;
+    border: 1px solid #6fa834;
+    left: -20px;
 }
 
 .perfil-header {

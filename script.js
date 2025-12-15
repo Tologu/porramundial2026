@@ -5,6 +5,7 @@
 // --- Detección de Perfil y Configuración ---
 let storageKey;
 let passwordReiniciar;
+const esPaginaPartidos = window.location.pathname.includes('partidos.html');
 
 // Obtener la parte del nombre del archivo de la URL (ej: 'perfil-tomas')
 const pathName = window.location.pathname;
@@ -118,6 +119,39 @@ function calcularPuntajePerfil(pronosticosOficiales, pronosticosPerfil) {
     return { puntos, aciertos, exactos };
 }
 
+function obtenerAcertantesExactos(nombrePartido) {
+    const pronosticosOficiales = cargarPronosticosPorClave(perfilesConfig.partidos.key);
+    const oficial = pronosticosOficiales[nombrePartido];
+    if (!oficial || typeof oficial.local !== 'number' || typeof oficial.visitante !== 'number') {
+        return [];
+    }
+
+    const mapaParticipantes = {
+        'Tomás': 'tomas',
+        'Miguel': 'miguel',
+        'Sofía': 'sofia',
+        'Inma': 'inma',
+        'Manolo': 'manolo',
+        'Martina': 'martina',
+        'Adri': 'adri',
+        'Fuen': 'fuen',
+        'Isa': 'isa',
+        'Jose': 'jose'
+    };
+
+    return Object.entries(mapaParticipantes).reduce((acc, [nombreVisible, slug]) => {
+        const configPerfil = perfilesConfig[slug];
+        if (!configPerfil) return acc;
+        const pronosticosJugador = cargarPronosticosPorClave(configPerfil.key);
+        const jug = pronosticosJugador[nombrePartido];
+        if (!jug) return acc;
+        if (jug.local === oficial.local && jug.visitante === oficial.visitante) {
+            acc.push(nombreVisible);
+        }
+        return acc;
+    }, []);
+}
+
 function actualizarClasificacionIndex() {
     const tabla = document.getElementById('tabla-clasificacion');
     if (!tabla) return;
@@ -181,6 +215,9 @@ function marcarAciertosPerfil() {
     const pronosticosOficiales = cargarPronosticosPorClave(perfilesConfig.partidos.key);
 
     document.querySelectorAll('.partido-card').forEach(card => {
+        // limpiar badge previa
+        card.querySelector('.badge-puntos')?.remove();
+
         const equipoLocal = card.querySelector('.equipo-local')?.textContent?.trim();
         const equipoVisitante = card.querySelector('.equipo-visitante')?.textContent?.trim();
         if (!equipoLocal || !equipoVisitante) return;
@@ -198,6 +235,10 @@ function marcarAciertosPerfil() {
         const esExacto = oficial.local === jugador.local && oficial.visitante === jugador.visitante;
         if (esExacto) {
             card.classList.add('acierto-exacto');
+            const badge = document.createElement('span');
+            badge.className = 'badge-puntos badge-exacto';
+            badge.textContent = '+5';
+            card.prepend(badge);
             return;
         }
 
@@ -205,6 +246,10 @@ function marcarAciertosPerfil() {
         const signoJugador = obtenerSignoResultado(jugador.local, jugador.visitante);
         if (signoOficial === signoJugador) {
             card.classList.add('acierto-signo');
+            const badge = document.createElement('span');
+            badge.className = 'badge-puntos badge-signo';
+            badge.textContent = '+2';
+            card.prepend(badge);
         }
     });
 }
@@ -425,6 +470,7 @@ function generarEstructuraPartidos() {
               <div class="acciones">
                 <button class="btn-confirmar" ${btnConfirmarDisabled}>Confirmar</button>
                 <button class="btn-cambiar" ${btnCambiarDisabled}>Cambiar</button>
+                ${esPaginaPartidos ? `<button class="btn-acertantes-exactos" data-partido="${nombrePartido}">Acertantes Exactos</button>` : ''}
               </div>
             </div>
           `;
@@ -622,6 +668,16 @@ function renderizarClasificacion(grupoData, clasificacion) {
  */
 function manejarPronostico(event) {
     const boton = event.target;
+    if (boton.classList.contains('btn-acertantes-exactos')) {
+        const nombrePartido = boton.dataset.partido;
+        const lista = obtenerAcertantesExactos(nombrePartido);
+        const mensaje = lista.length
+            ? `Acertantes exactos (${lista.length}):\n- ${lista.join('\n- ')}`
+            : 'Nadie ha acertado este resultado exacto todavía.';
+        alert(mensaje);
+        return;
+    }
+
     if (!boton.classList.contains('btn-confirmar') && !boton.classList.contains('btn-cambiar')) return;
 
     const partidoCard = boton.closest('.partido-card');
