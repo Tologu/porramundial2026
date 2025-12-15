@@ -280,6 +280,22 @@ h2 {
     text-align: center;
 }
 
+@media (max-width: 600px) {
+    .equipos {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .equipos .vs {
+        margin: 2px 0;
+    }
+
+    .equipos .marcador {
+        width: 56px;
+    }
+}
+
 .acciones {
   display: flex;
   gap: 10px;
