@@ -304,3 +304,361 @@ footer {
   border-collapse: collapse;
   font-size: 0.9em; /* más compacto en móvil */
 }
+.group-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ddd;
+    gap: 2px; /* Espacio mínimo entre botones */
+}
+
+.tab-button {
+    padding: 10px 15px;
+    cursor: pointer;
+    background-color: #eee;
+    border: none;
+    transition: background-color 0.3s, color 0.3s;
+    font-weight: bold;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-size: 0.9em;
+}
+
+.tab-button:hover {
+    background-color: #e0e0e0;
+}
+
+.tab-button.active {
+    background-color: white;
+    color: var(--color-principal);
+    border-bottom: 2px solid var(--color-secundario);
+    margin-bottom: -2px; /* Superpone el borde inferior */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05); /* Sombra sutil arriba */
+}
+
+/* Reglas para mostrar/ocultar el contenido de los grupos */
+#contenedor-grupos .grupo {
+    display: none; /* Oculta todos los grupos por defecto */
+    padding-top: 10px;
+}
+
+#contenedor-grupos .grupo.active {
+    display: block; /* Muestra el grupo activo */
+}
+/* --- ESTILOS DE TABLA DE CLASIFICACIÓN DENTRO DE GRUPOS --- */
+
+.tabla-clasificacion-grupo {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    font-size: 0.9em;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    background-color: white;
+}
+
+.tabla-clasificacion-grupo thead {
+    background-color: var(--color-principal);
+    color: white;
+}
+
+.tabla-clasificacion-grupo th, .tabla-clasificacion-grupo td {
+    padding: 8px 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.tabla-clasificacion-grupo tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Colores de Posición */
+/* --- ESTILOS DE TABLA DE CLASIFICACIÓN DENTRO DE GRUPOS --- */
+
+.tabla-clasificacion-grupo {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    font-size: 0.9em;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    background-color: white;
+}
+
+.tabla-clasificacion-grupo thead {
+    background-color: var(--color-principal); /* O el color que uses para tu encabezado */
+    color: white;
+}
+
+.tabla-clasificacion-grupo th, .tabla-clasificacion-grupo td {
+    padding: 8px 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+/* IMPORTANTE: Colores de Posición */
+
+/* 1º y 2º puesto: Pasan a dieciseisavos (Fondo verde) */
+.tabla-clasificacion-grupo .pasa-directo { 
+    background-color: #e6ffe6 !important; /* Verde suave. Usamos !important para anular estilos de fondo de tr:nth-child(even) */
+    font-weight: bold;
+}
+
+/* 3º puesto: Candidato a mejor tercero (Fondo amarillo suave) */
+.tabla-clasificacion-grupo .candidato-tercero { 
+    background-color: #fffacd !important; /* Amarillo muy suave (LemonChiffon) */
+}
+
+/* 4º puesto: Eliminado (Fondo rojo) */
+.tabla-clasificacion-grupo .eliminado { 
+    background-color: #ffe6e6 !important; /* Rojo suave */
+}
+
+/* Estilo para filas pares (Si lo tienes, puede estar causando el conflicto) */
+.tabla-clasificacion-grupo tbody tr:nth-child(even) {
+    /* Si esta regla tiene un color de fondo, podría estar anulando los colores de posición */
+    background-color: #f9f9f9; 
+}
+
+.tabla-clasificacion-grupo td.equipo-nombre {
+    font-weight: bold;
+}
+
+/* --- ESTILOS PARA EL BRACKET DE DIECISEISAVOS --- */
+
+#bracket-dieciseisavos {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: space-around;
+}
+
+.partido-bracket {
+    width: calc(50% - 15px); /* Dos columnas */
+    max-width: 400px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #f7f7f7;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.partido-bracket .llave {
+    display: block;
+    font-weight: bold;
+    color: var(--color-principal);
+    margin-bottom: 5px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 3px;
+}
+
+.enfrentamiento {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1em;
+}
+
+.equipo-bracket {
+    font-weight: 500;
+    flex-basis: 40%;
+    text-align: center;
+}
+
+.vs-bracket {
+    font-size: 0.8em;
+    color: #666;
+}
+
+/* En móviles, una sola columna */
+@media (max-width: 768px) {
+    .partido-bracket {
+        width: 100%;
+    }
+}
+/* ==================================================================== */
+/* ESTILOS ESPECÍFICOS DE LAS RONDAS ELIMINATORIAS (R32, R16, R8, R4, FINAL) */
+/* ==================================================================== */
+
+.ronda-eliminatoria {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espacio entre cada partido de la ronda */
+    padding: 20px 0;
+}
+
+.partido-bracket {
+    background-color: #f8f9fa; /* Fondo claro para la tarjeta del partido */
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* Estado de Enfrentamiento (Hover) */
+.partido-bracket:not(.deshabilitado):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Indicador de Llave (M73, M104, etc.) */
+.llave {
+    font-size: 0.8em;
+    color: #6c757d; /* Gris tenue */
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+/* Contenedor principal de los botones VS */
+.enfrentamiento-clic {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 400px;
+}
+
+.vs-eliminatoria {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #495057; /* Gris oscuro */
+    margin: 0 10px;
+}
+
+/* ---------------------------------------------------- */
+/* ESTILOS DE LOS BOTONES DE EQUIPO (PRONÓSTICO) */
+/* ---------------------------------------------------- */
+
+.btn-equipo-ganador {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: 2px solid #ced4da; /* Borde predeterminado */
+    border-radius: 5px;
+    background-color: #ffffff;
+    color: #343a40;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    text-align: center;
+    white-space: nowrap; /* Evita que los nombres largos se rompan */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 120px;
+}
+
+.btn-equipo-ganador:hover:not(:disabled) {
+    background-color: #e9ecef; /* Resaltar al pasar el ratón */
+    border-color: #adb5bd;
+}
+
+.btn-equipo-ganador:active:not(:disabled) {
+    background-color: #dee2e6;
+}
+
+/* ---------------------------------------------------- */
+/* ESTADO DEL GANADOR ELEGIDO (CLAVE PARA DESTACAR) */
+/* ---------------------------------------------------- */
+
+.btn-equipo-ganador.elegido {
+    background-color: #007bff; /* Azul primario fuerte */
+    color: #d4d709; /* Texto blanco para alto contraste */
+    border-color: #0056b3;
+    font-weight: bold;
+    /* Efecto visual de "ganador" */
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+    transform: scale(1.02);
+}
+
+.partido-bracket.deshabilitado .btn-equipo-ganador.elegido {
+    /* El ganador sigue destacado pero desactiva el hover/cursor */
+    cursor: default;
+    opacity: 1; /* Asegurar que no se atenúa */
+}
+
+/* ---------------------------------------------------- */
+/* ESTADOS ESPECIALES */
+/* ---------------------------------------------------- */
+
+/* Partidos Completados (Deshabilitados) */
+.partido-bracket.deshabilitado {
+    border-left: 5px solid #007bff; /* Borde lateral para indicar "completo" */
+    opacity: 0.9;
+}
+
+/* Botones deshabilitados (TBD o ya elegido) */
+.btn-equipo-ganador:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    background-color: #f1f3f5;
+    border-color: #e9ecef;
+}
+
+/* Enfrentamiento con TBD (Falta definir la llave anterior) */
+.partido-bracket.tbd-enfrentamiento {
+    background-color: #fff3cd; /* Fondo amarillo claro de advertencia */
+    border: 1px dashed #ffc107; /* Borde discontinuo */
+}
+
+.partido-bracket.tbd-enfrentamiento .btn-equipo-ganador:disabled {
+    color: #856404; /* Color de texto más oscuro de advertencia */
+    font-style: italic;
+}
+
+
+/* ---------------------------------------------------- */
+/* BOTÓN DE CAMBIAR GANADOR (PARA PARTIDOS YA RESUELTOS) */
+/* ---------------------------------------------------- */
+
+.acciones-elim {
+    margin-top: 10px;
+}
+
+.btn-cambiar-elim-clic {
+    background-color: #dc3545; /* Rojo para la acción de "deshacer" */
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s;
+}
+
+.btn-cambiar-elim-clic:hover {
+    background-color: #c82333;
+}
+/* ==================================================================== */
+/* ESTILOS PARA EL BOTÓN DE ADMINISTRACIÓN (REINICIO) */
+/* ==================================================================== */
+
+#admin-panel-flotante {
+    position: fixed; /* Fija el botón en la ventana del navegador */
+    top: 10px;      /* Distancia desde la parte superior */
+    left: 10px;     /* Distancia desde la izquierda */
+    z-index: 1000;  /* Asegura que esté por encima de otros elementos */
+}
+
+#btn-reiniciar-app {
+    /* Estilo para que parezca un icono o un botón secundario */
+    background-color: #f1f1f1;
+    color: #495057; 
+    border: 1px solid #ccc;
+    border-radius: 50%; /* Lo hacemos redondo */
+    width: 35px;
+    height: 35px;
+    padding: 0;
+    font-size: 1.1em;
+    cursor: pointer;
+    opacity: 0.5; /* Lo hacemos semitransparente para que no destaque */
+    transition: opacity 0.3s, background-color 0.3s;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+#btn-reiniciar-app:hover {
+    opacity: 1; /* Al pasar el ratón, se revela completamente */
+    background-color: #e9ecef;
+    color: #000;
+}
