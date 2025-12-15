@@ -171,6 +171,44 @@ function actualizarClasificacionIndex() {
     });
 }
 
+// ====================================================================
+// 0.2 MARCADO DE ACIERTOS EN PERFILES (VISUAL)
+// ====================================================================
+
+function marcarAciertosPerfil() {
+    if (!perfilNombre) return; // Solo para páginas de perfil
+
+    const pronosticosOficiales = cargarPronosticosPorClave(perfilesConfig.partidos.key);
+
+    document.querySelectorAll('.partido-card').forEach(card => {
+        const equipoLocal = card.querySelector('.equipo-local')?.textContent?.trim();
+        const equipoVisitante = card.querySelector('.equipo-visitante')?.textContent?.trim();
+        if (!equipoLocal || !equipoVisitante) return;
+
+        const nombrePartido = `${equipoLocal} vs ${equipoVisitante}`;
+        const oficial = pronosticosOficiales[nombrePartido];
+        const jugador = pronosticosConfirmados[nombrePartido];
+
+        card.classList.remove('acierto-exacto', 'acierto-signo');
+
+        if (!oficial || !jugador) return;
+        if (typeof oficial.local !== 'number' || typeof oficial.visitante !== 'number') return;
+        if (typeof jugador.local !== 'number' || typeof jugador.visitante !== 'number') return;
+
+        const esExacto = oficial.local === jugador.local && oficial.visitante === jugador.visitante;
+        if (esExacto) {
+            card.classList.add('acierto-exacto');
+            return;
+        }
+
+        const signoOficial = obtenerSignoResultado(oficial.local, oficial.visitante);
+        const signoJugador = obtenerSignoResultado(jugador.local, jugador.visitante);
+        if (signoOficial === signoJugador) {
+            card.classList.add('acierto-signo');
+        }
+    });
+}
+
 /**
  * Guarda el objeto actual de pronósticos en localStorage.
  */
@@ -451,6 +489,9 @@ function generarEstructuraPartidos() {
             }
         }
     });
+
+    // Después de renderizar la estructura, marcar aciertos en perfiles
+    marcarAciertosPerfil();
 }
 
 
@@ -636,6 +677,9 @@ function manejarPronostico(event) {
         const clasificacionActualizada = calcularClasificacion(grupoNombre, grupoEncontrado.equipos, pronosticosConfirmados);
         renderizarClasificacion({ nombre: grupoNombre }, clasificacionActualizada);
     }
+
+    // Recalcular marcado de aciertos en perfiles
+    marcarAciertosPerfil();
 }
 
 

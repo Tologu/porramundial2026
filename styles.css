@@ -56,6 +56,21 @@ nav a.active {
     font-weight: bold;
 }
 
+/* Navegación adaptable en móvil */
+@media (max-width: 768px) {
+    nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        padding: 0 10px;
+    }
+
+    nav a {
+        margin: 2px 0;
+    }
+}
+
 /* CONTENIDO PRINCIPAL */
 main {
     padding: 30px 5%;
@@ -196,6 +211,19 @@ h2 {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap; /* Para hacerlo responsivo */
+}
+
+@media (max-width: 768px) {
+    .partido-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .acciones {
+        width: 100%;
+        justify-content: flex-start;
+    }
 }
 
 .info-partido {
@@ -661,4 +689,21 @@ footer {
     opacity: 1; /* Al pasar el ratón, se revela completamente */
     background-color: #e9ecef;
     color: #000;
+}
+
+/* ==================================================================== */
+/* MARCADO DE ACIERTOS EN PERFILES */
+/* ==================================================================== */
+.partido-card.acierto-exacto {
+    border-left-color: #ffc815;
+    background: linear-gradient(90deg, #ffe082, #fdb927, #ffe082);
+    background-size: 200% 200%;
+    animation: brillo 7s linear infinite, pulso 6s ease-in-out infinite;
+    box-shadow: 4px 2px 20px 3px rgba(253, 185, 39, 0.7);
+}
+
+.partido-card.acierto-signo {
+    border-left-color: #8bc34a;
+    background: #d4ffa3;
+    box-shadow: 0 0 6px rgba(139, 195, 74, 0.35);
 }
