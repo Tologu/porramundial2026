@@ -21,6 +21,7 @@ body {
     background-color: var(--color-fondo);
     color: var(--color-texto);
     line-height: 1.6;
+    
 }
 
 /* HEADER Y NAVEGACIÓN */
@@ -30,6 +31,7 @@ header {
     padding: 20px 0;
     text-align: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
 }
 
 header h1 {
@@ -54,6 +56,27 @@ nav a.active {
     background-color: var(--color-secundario);
     color: var(--color-principal);
     font-weight: bold;
+}
+
+.btn-reglas-header {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    background: #ffffff;
+    color: var(--color-principal);
+    border: none;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.85em;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-reglas-header:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Navegación adaptable en móvil */
@@ -112,6 +135,10 @@ h2 {
 #tabla-clasificacion tbody tr:hover {
     background-color: #e6f7ff;
     cursor: pointer;
+}
+
+#tabla-clasificacion tbody a {
+    color: #000;
 }
 
 #tabla-clasificacion tbody tr:first-child {
@@ -740,6 +767,14 @@ footer {
 
 .btn-cambiar-elim-clic:hover {
     background-color: #c82333;
+}
+
+.puntos-ronda {
+    margin-top: 6px;
+    align-self: flex-end;
+    font-weight: bold;
+    color: #000;
+    font-size: 0.9em;
 }
 /* ==================================================================== */
 /* ESTILOS PARA EL BOTÓN DE ADMINISTRACIÓN (REINICIO) */

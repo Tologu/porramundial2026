@@ -6,6 +6,7 @@
 let storageKey;
 let passwordReiniciar;
 const esPaginaPartidos = window.location.pathname.includes('partidos.html');
+const CONTRASENA_CAMBIO_PERFIL = "OvejaBandolera";
 
 // Obtener la parte del nombre del archivo de la URL (ej: 'perfil-tomas')
 const pathName = window.location.pathname;
@@ -81,11 +82,29 @@ function obtenerSignoResultado(golesLocal, golesVisitante) {
     return 'E';
 }
 
+// Devuelve el conjunto de equipos presentes en una ronda eliminatoria concreta
+function obtenerEquiposPorRonda(pronosticos, ronda, soloFinal = false) {
+    const set = new Set();
+    Object.entries(pronosticos).forEach(([clave, dato]) => {
+        if (dato.ronda !== ronda) return;
+        if (soloFinal && clave !== 'M104') return; // solo la final, no 3er puesto
+        const { equipoLocal, equipoVisitante } = dato;
+        if (equipoLocal && equipoLocal !== 'TBD' && !equipoLocal.startsWith('Tercero')) {
+            set.add(equipoLocal);
+        }
+        if (equipoVisitante && equipoVisitante !== 'TBD' && !equipoVisitante.startsWith('Tercero')) {
+            set.add(equipoVisitante);
+        }
+    });
+    return set;
+}
+
 function calcularPuntajePerfil(pronosticosOficiales, pronosticosPerfil) {
     let puntos = 0;
     let aciertos = 0;
     let exactos = 0;
 
+    // 1) FASE DE GRUPOS: resultado exacto (5) o signo (2)
     Object.entries(pronosticosOficiales).forEach(([clave, oficial]) => {
         const jugador = pronosticosPerfil[clave];
         if (!jugador) return;
@@ -108,13 +127,40 @@ function calcularPuntajePerfil(pronosticosOficiales, pronosticosPerfil) {
                 puntos += 2;
                 aciertos += 1;
             }
-        } else if (oficial.ganador && jugador.ganador) {
-            if (oficial.ganador === jugador.ganador) {
-                puntos += 2;
-                aciertos += 1;
-            }
         }
     });
+
+    // 2) ELIMINATORIAS: presencia por ronda
+    const rondasElim = [
+        { ronda: 'R32', puntos: 2 },
+        { ronda: 'R16', puntos: 3 },
+        { ronda: 'R8',  puntos: 4 },
+        { ronda: 'R4',  puntos: 5 },
+        { ronda: 'Final', puntos: 6 }
+    ];
+
+    rondasElim.forEach(({ ronda, puntos: pts }) => {
+        const soloFinal = ronda === 'Final';
+        const oficiales = obtenerEquiposPorRonda(pronosticosOficiales, ronda, soloFinal);
+        const jugador = obtenerEquiposPorRonda(pronosticosPerfil, ronda, soloFinal);
+
+        oficiales.forEach(equipo => {
+            if (jugador.has(equipo)) {
+                puntos += pts;
+                aciertos += 1;
+            }
+        });
+    });
+
+    // 3) BONUS CAMPEÓN: +4 si acierta el ganador del mundial (M104)
+    const finalOficial = pronosticosOficiales['M104'];
+    const finalJugador = pronosticosPerfil['M104'];
+    if (finalOficial && finalJugador && finalOficial.ganador && finalJugador.ganador) {
+        if (finalOficial.ganador === finalJugador.ganador) {
+            puntos += 4;
+            aciertos += 1;
+        }
+    }
 
     return { puntos, aciertos, exactos };
 }
@@ -185,7 +231,8 @@ function actualizarClasificacionIndex() {
 
     clasificacion.sort((a, b) => {
         if (a.puntos !== b.puntos) return b.puntos - a.puntos;
-        return b.aciertos - a.aciertos;
+        if (a.aciertos !== b.aciertos) return b.aciertos - a.aciertos;
+        return a.nombreVisible.localeCompare(b.nombreVisible, 'es', { sensitivity: 'base' });
     });
 
     const tbody = tabla.querySelector('tbody');
@@ -719,6 +766,17 @@ function manejarPronostico(event) {
         guardarPronosticos(); 
 
     } else if (boton.classList.contains('btn-cambiar')) {
+        // En perfiles, exigir contraseña para permitir cambiar un pronóstico ya confirmado
+        if (!esPaginaPartidos && perfilNombre) {
+            const pass = prompt("Introduce la contraseña para modificar este pronóstico:");
+            if (pass !== CONTRASENA_CAMBIO_PERFIL) {
+                if (pass !== null) {
+                    alert("Contraseña incorrecta. No se ha modificado el pronóstico.");
+                }
+                return;
+            }
+        }
+
         inputLocal.disabled = false;
         inputVisitante.disabled = false;
         btnConfirmar.disabled = false;
@@ -1024,8 +1082,32 @@ function renderizarRondaEliminatoria(partidos, ronda) {
          html = `<p>Faltan resultados de la ronda anterior para generar los ${ronda}.</p>`;
     } else {
         html = '<div class="ronda-eliminatoria">';
+
+        // Preparar datos de puntos por presencia en ronda (solo en perfiles)
+        let equiposOficialRonda = null;
+        let equiposJugadorRonda = null;
+        let puntosRonda = 0;
+        if (perfilNombre) {
+            const pronOficial = cargarPronosticosPorClave(perfilesConfig.partidos.key);
+            const soloFinal = ronda === 'Final';
+            equiposOficialRonda = obtenerEquiposPorRonda(pronOficial, ronda, soloFinal);
+            equiposJugadorRonda = obtenerEquiposPorRonda(pronosticosConfirmados, ronda, soloFinal);
+            const mapaPuntosRonda = { R32: 2, R16: 3, R8: 4, R4: 5, Final: 6 };
+            puntosRonda = mapaPuntosRonda[ronda] || 0;
+        }
         
         partidos.forEach(p => {
+            // Calcular puntos de presencia de equipos en esta llave (solo perfiles)
+            let puntosPartido = 0;
+            if (perfilNombre && equiposOficialRonda && equiposJugadorRonda && puntosRonda > 0) {
+                [p.equipo1, p.equipo2].forEach(eq => {
+                    if (!eq || eq === 'TBD' || eq.startsWith('Tercero')) return;
+                    if (equiposOficialRonda.has(eq) && equiposJugadorRonda.has(eq)) {
+                        puntosPartido += puntosRonda;
+                    }
+                });
+            }
+
             const nombreLlave = p.nombreCompletoLlave; // M73, M89, M104, etc.
             const resultadoGuardado = pronosticosConfirmados[nombreLlave] || {};
             
@@ -1073,6 +1155,9 @@ function renderizarRondaEliminatoria(partidos, ronda) {
                             ${p.equipo2}
                         </button>
                     </div>
+                     ${perfilNombre && puntosPartido > 0 ? 
+                        `<div class="puntos-ronda">+${puntosPartido}</div>`
+                       : ''}
                      ${yaHayGanador && !EQUIPO_1_TBD && !EQUIPO_2_TBD ? 
                         `<div class="acciones-elim">
                             <button class="btn-cambiar-elim-clic" data-llave="${nombreLlave}">Cambiar Ganador</button>
@@ -1169,9 +1254,31 @@ function manejarPronosticoEliminatoria(event) {
 document.addEventListener('DOMContentLoaded', () => {
     const tablaClasificacion = document.getElementById('tabla-clasificacion');
 
-    // Si estamos en la página de clasificación, solo calculamos puntos
+    // Si estamos en la página de clasificación, calculamos puntos y mostramos reglas
     if (tablaClasificacion) {
         actualizarClasificacionIndex();
+
+        const btnReglas = document.querySelector('.btn-reglas-header');
+        if (btnReglas) {
+            btnReglas.addEventListener('click', () => {
+                alert(
+`REGLAS DE PUNTUACIÓN
+
+FASE DE GRUPOS
+- 5 puntos por acertar el resultado exacto de un partido.
+- 2 puntos por acertar simplemente (gana local, gana visitante o empate).
+
+ELIMINATORIAS (PRESENCIA POR RONDA)
+- Dieciseisavos: 2 puntos por cada equipo que esté en el resultado oficial y también en tu cuadro (cualquier cruce).
+- Octavos: 3 puntos por equipo.
+- Cuartos: 4 puntos por equipo.
+- Semifinales: 5 puntos por equipo.
+- Final: 6 puntos por cada finalista que coincide.
+
+BONUS CAMPEÓN
+- +4 puntos extra si aciertas el campeón del mundo (ganador de la Final).`);
+            });
+        }
         return;
     }
 
