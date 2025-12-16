@@ -3,22 +3,35 @@ require('dotenv').config(); // Carga las variables del .env
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
+const cors = require('cors');
 const Participante = require('./models/Participante'); // Importa el modelo
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-// MIDDLEWARES
+// Middleware
+app.use(cors());
 app.use(express.json()); // Para procesar cuerpos JSON
 // Sirve todos los archivos estáticos de la carpeta 'public'
 app.use(express.static(path.join(__dirname, 'public'))); 
 
-// ==========================================================
-// CONEXIÓN A MONGODB
-// ==========================================================
-mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log('Conexión a MongoDB Atlas exitosa!'))
-    .catch(err => console.error('Error de conexión a MongoDB:', err));
+// Conexión a MongoDB con opciones mejoradas
+mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 5000,
+    socketTimeoutMS: 45000
+})
+.then(() => console.log('✅ Conexión a MongoDB Atlas exitosa!'))
+.catch(err => {
+    console.error('❌ Error de conexión a MongoDB:', err.message);
+    process.exit(1);
+});
+
+// Manejo de errores global
+process.on('unhandledRejection', (err) => {
+    console.error('Error no manejado en promesa:', err);
+});
 
 // ==========================================================
 // 1. RUTA GET: OBTENER DATOS (Para los MÓVILES)
